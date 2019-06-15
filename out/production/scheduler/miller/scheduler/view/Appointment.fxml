@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="736.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="miller.scheduler.view.AppointmentController">
+    <children>
+      <HBox alignment="CENTER_LEFT" maxHeight="37.0" minHeight="32.0" prefHeight="37.0" prefWidth="322.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" text="Appointments" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+            <SplitPane dividerPositions="0.4634146341463415" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+                <items>
+            <AnchorPane>
+               <children>
+                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                  <HBox alignment="CENTER_LEFT" prefHeight="50.0">
+                                      <children>
+                                          <RadioButton fx:id="rdoViewByMonth" mnemonicParsing="false" onAction="#handleViewByRadioButton" prefWidth="75.0" selected="true" text="Monthly">
+                                              <HBox.margin>
+                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                              </HBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="viewBy" />
+                                 </toggleGroup>
+                              </RadioButton>
+                                          <RadioButton fx:id="rdoViewByWeek" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleViewByRadioButton" prefWidth="75.0" text="Weekly" toggleGroup="$viewBy">
+                                              <HBox.margin>
+                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                              </HBox.margin>
+                              </RadioButton>
+                              <RadioButton fx:id="rdoViewAll" layoutX="98.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleViewByRadioButton" prefWidth="75.0" text="All" toggleGroup="$viewBy">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </RadioButton>
+                                      </children>
+                                  </HBox>
+                                  <TableView fx:id="tblAppointment" prefHeight="153.0" VBox.vgrow="ALWAYS">
+                                      <columns>
+                                          <TableColumn fx:id="colApptId" prefWidth="37.0" text="Id" />
+                                          <TableColumn fx:id="colApptDate" prefWidth="113.0" text="Date" />
+                                          <TableColumn fx:id="colApptStartTime" prefWidth="85.0" text="Start" />
+                                          <TableColumn fx:id="colApptEndTime" prefWidth="84.0" text="End" />
+                                          <TableColumn fx:id="colApptCustomerName" prefWidth="134.0" text="Name" />
+                                          <TableColumn fx:id="colApptDesc" prefWidth="150.0" text="Description" />
+                                      </columns>
+                                  </TableView>
+                              </children>
+                          </VBox>
+               </children>
+            </AnchorPane>
+                    <AnchorPane>
+                        <children>
+                            <VBox alignment="TOP_CENTER" layoutX="127.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <children>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="CUSTOMER:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets left="5.0" right="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                              <ComboBox fx:id="cmbCustomer" prefWidth="180.0">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="TITLE:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets left="5.0" right="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <TextField fx:id="txtFldTitle" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </TextField>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="APPOINTMENT TYPE:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox fx:id="cmbAppDesc" prefHeight="27.0" prefWidth="180.0">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </ComboBox>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="LOCATION:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <TextField fx:id="txtFldLocation" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </TextField>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="84.0" prefHeight="32.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="CONTACT:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <TextField fx:id="txtFldContact" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </TextField>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="121.0" prefHeight="32.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="DATE:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <DatePicker fx:id="datePicker">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </DatePicker>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="158.0" prefHeight="32.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="START TIME:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox fx:id="cmbStartHour" editable="true" prefWidth="75.0">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </ComboBox>
+                                            <Label text=":">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox fx:id="cmbStartMinute" editable="true" layoutX="200.0" layoutY="15.0" prefWidth="75.0">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                              </ComboBox>
+                                            <ComboBox fx:id="cmbStartPeriod" editable="true" layoutX="274.0" layoutY="15.0" prefWidth="75.0" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="195.0" prefHeight="32.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="END TIME:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox fx:id="cmbEndHour" editable="true" prefWidth="75.0">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </ComboBox>
+                                            <Label text=":">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox fx:id="cmbEndMinute" editable="true" layoutX="200.0" layoutY="15.0" prefWidth="75.0">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                              </ComboBox>
+                                            <ComboBox fx:id="cmbEndPeriod" editable="true" layoutX="274.0" layoutY="15.0" prefWidth="75.0" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="121.0" prefHeight="32.0">
+                                        <children>
+                                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="175.0" text="URL:" textAlignment="CENTER">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Label>
+                                            <TextField fx:id="txtFldUrl" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                                <padding>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </padding>
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </TextField>
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="343.0" prefHeight="32.0">
+                                        <children>
+                              <HBox maxWidth="-Infinity" prefHeight="37.0" prefWidth="191.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#handleClearButtonEvent" prefWidth="75.0" text="New">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="50.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                                            <Button mnemonicParsing="false" onAction="#handleSaveButtonEvent" prefWidth="75.0" text="Save">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="50.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Button>
+                                            <Button mnemonicParsing="false" onAction="#handleDeleteButtonEvent" prefWidth="75.0" text="Delete">
+                                                <HBox.margin>
+                                                    <Insets bottom="5.0" left="5.0" right="100.0" top="5.0" />
+                                                </HBox.margin>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </children>
+            </AnchorPane>
+                </items>
+            </SplitPane>
+    </children>
+</AnchorPane>

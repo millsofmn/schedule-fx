@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="miller.scheduler.view.UserController">
+    <children>
+        <HBox alignment="CENTER_LEFT" maxHeight="37.0" minHeight="32.0" prefHeight="37.0" prefWidth="322.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <Label alignment="CENTER" text="User" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+        <SplitPane dividerPositions="0.5955678670360111" layoutY="37.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="309.0" prefWidth="433.0">
+                    <children>
+                        <TableView fx:id="tblUser" layoutX="14.0" layoutY="38.0" prefHeight="121.0" prefWidth="322.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="colUserId" prefWidth="75.0" text="Id" />
+                                <TableColumn fx:id="colUsername" minWidth="100.0" prefWidth="-1.0" text="Username" />
+                                <TableColumn fx:id="colPassword" minWidth="100.0" prefWidth="-1.0" text="Password" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <AnchorPane>
+                    <children>
+                        <HBox alignment="CENTER" layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <children>
+                                <VBox alignment="TOP_CENTER">
+                                    <children>
+                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="32.0">
+                                            <children>
+                                                <Label prefHeight="27.0" text="USERNAME:" textAlignment="CENTER">
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                    </padding>
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="50.0" right="5.0" top="5.0" />
+                                                    </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="txtFldUsername" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                    </padding>
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="5.0" right="100.0" top="5.0" />
+                                                    </HBox.margin>
+                                                </TextField>
+                                            </children>
+                                        </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="32.0">
+                                 <children>
+                                    <Label prefHeight="27.0" text="PASSWORD:" textAlignment="CENTER">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="50.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtFldPassword" layoutX="56.0" layoutY="15.0" prefHeight="27.0" prefWidth="180.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="100.0" top="5.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                                        <HBox alignment="CENTER_RIGHT">
+                                            <children>
+                                                <HBox maxWidth="-Infinity" prefHeight="37.0" prefWidth="191.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#handleClearButtonEvent" prefWidth="75.0" text="New">
+                                                            <HBox.margin>
+                                                                <Insets bottom="5.0" left="50.0" right="5.0" top="5.0" />
+                                                            </HBox.margin>
+                                                        </Button>
+                                                    </children>
+                                                </HBox>
+                                                <Button mnemonicParsing="false" onAction="#handleSaveButtonEvent" prefWidth="75.0" text="Save">
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                    </HBox.margin>
+                                                </Button>
+                                                <Button layoutX="277.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleDeleteButtonEvent" prefWidth="75.0" text="Delete">
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="5.0" right="100.0" top="5.0" />
+                                                    </HBox.margin>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>
