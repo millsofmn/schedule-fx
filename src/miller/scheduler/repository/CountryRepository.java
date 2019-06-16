@@ -21,6 +21,8 @@ public class CountryRepository extends AbstractRepository<Country> {
 
         FIND_BY_NAME_STATEMENT = "Select * from country Where country = ?";
 
+        DELETE_PRECHECK_STATEMENT = "select count(*) from city where countryId = ?";
+
         mapper = new CountryMapper();
     }
 }

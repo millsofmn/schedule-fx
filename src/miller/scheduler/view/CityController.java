@@ -15,6 +15,7 @@ import miller.scheduler.service.dto.CityDto;
 import miller.scheduler.service.dto.CountryDto;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class CityController extends AnchorPane implements Initializable {
@@ -106,8 +107,11 @@ public class CityController extends AnchorPane implements Initializable {
     private void handleDeleteButtonEvent() {
         CityDto city = cityTable.getSelectionModel().getSelectedItem();
 
-        if(city != null) {
-            cityService.delete(city.getId());
+        if (city != null) {
+            if (!cityService.delete(city.getId())) {
+                Alert alert = ViewUtils.showValidationErrors(Arrays.asList("Deleting city will violate referential integrity."));
+                alert.showAndWait();
+            }
         }
         resetForm();
     }
@@ -123,12 +127,12 @@ public class CityController extends AnchorPane implements Initializable {
         cityDto.setId(cityId);
         cityDto.setCity(txtFldCity.getText());
 
-        if(selectedCountryDto != null) {
+        if (selectedCountryDto != null) {
             cityDto.setCountry(selectedCountryDto);
         }
 
-        if(cityDto.isValid()) {
-            if(cityId == null){
+        if (cityDto.isValid()) {
+            if (cityId == null) {
                 cityService.create(cityDto, user.getUserName());
             } else {
                 cityService.update(cityDto, user.getUserName());
@@ -155,7 +159,7 @@ public class CityController extends AnchorPane implements Initializable {
                 .ifPresent(cmbCountry.getSelectionModel()::select);
     }
 
-    private void resetForm(){
+    private void resetForm() {
         cityId = null;
         selectedCountryDto = null;
         txtFldCity.clear();

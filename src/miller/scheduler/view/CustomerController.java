@@ -19,6 +19,7 @@ import miller.scheduler.service.dto.CustomerDto;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -147,8 +148,14 @@ public class CustomerController extends AnchorPane implements Initializable {
 
         if(customer != null) {
             boolean customerResult = customerService.delete(customer.getId());
-            boolean addressResult = addressService.delete(customer.getAddress().getId());
-            log.info("Results for customer = " + customerResult + ", address = " + addressResult);
+
+            if(!customerResult){
+                Alert alert = ViewUtils.showValidationErrors(Arrays.asList("Deleting customer will violate referential integrity."));
+                alert.showAndWait();
+            } else {
+                boolean addressResult = addressService.delete(customer.getAddress().getId());
+                log.info("Results for customer = " + customerResult + ", address = " + addressResult);
+            }
         }
         resetForm();
     }

@@ -14,13 +14,15 @@ import java.util.logging.Logger;
 public abstract class AbstractRepository<T> {
     private final Logger log = Logger.getLogger(AbstractRepository.class.getName());
 
-    protected String NXT_ID_STATEMENT;
-    protected String DELETE_STATEMENT;
-    protected String INSERT_STATEMENT;
-    protected String SELECT_STATEMENT;
-    protected String UPDATE_STATEMENT;
-    protected String FIND_BY_ID_STATEMENT;
-    protected String FIND_BY_NAME_STATEMENT;
+    protected String NXT_ID_STATEMENT = "";
+    protected String DELETE_STATEMENT = "";
+    protected String DELETE_PRECHECK_STATEMENT = "";
+    protected String INSERT_STATEMENT = "";
+    protected String SELECT_STATEMENT = "";
+    protected String UPDATE_STATEMENT = "";
+    protected String FIND_BY_ID_STATEMENT = "";
+    protected String FIND_BY_NAME_STATEMENT = "";
+
     protected Mapper<T> mapper;
 
     private final DatabaseConnection databaseConnection;
@@ -167,25 +169,51 @@ public abstract class AbstractRepository<T> {
 
     public boolean delete(int id) {
         log.info("Deleting entity id : " + id);
-        Connection connection = null;
-        try {
-            connection = databaseConnection.getConnection();
+
+        if (deleteWillViolateReferentialIntegrity(id)) {
+            return false;
+        }
+
+        try (Connection connection = databaseConnection.getConnection();
+             Statement statement = connection.createStatement()) {
 
 
-            try (Statement statement = connection.createStatement()) {
-                String stmt = DELETE_STATEMENT.replace("?", String.valueOf(id));
-                int i = statement.executeUpdate(stmt);
+            String stmt = DELETE_STATEMENT.replace("?", String.valueOf(id));
+            int i = statement.executeUpdate(stmt);
 
-                if (i == 1) return true;
-            } catch (SQLException e) {
-                log.severe("Error: " + e);
-            }
+            if (i == 1) return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            databaseConnection.releaseConnection(connection);
+            log.severe("Error: " + e);
         }
         return false;
+    }
+
+    public boolean deleteWillViolateReferentialIntegrity(int id) {
+
+        boolean hasForeignKeys = false;
+
+        if (!DELETE_PRECHECK_STATEMENT.isEmpty()) {
+            log.info("Delete precheck for id : " + id);
+
+
+            try (Connection connection = databaseConnection.getConnection();
+                 PreparedStatement ps = connection.prepareStatement(DELETE_PRECHECK_STATEMENT)) {
+
+                ps.setInt(1, id);
+
+                ResultSet resultSet = ps.executeQuery();
+
+                while (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    if (count > 0) {
+                        hasForeignKeys = true;
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return hasForeignKeys;
     }
 
     public T executeUpdate(String sql, T entity) {

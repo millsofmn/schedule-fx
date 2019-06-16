@@ -15,6 +15,7 @@ import miller.scheduler.service.CountryService;
 import miller.scheduler.service.dto.CountryDto;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -69,7 +70,10 @@ public class CountryController extends AnchorPane implements Initializable {
         CountryDto country = countryTable.getSelectionModel().getSelectedItem();
 
         if(country != null) {
-            countryService.delete(country.getId());
+            if(!countryService.delete(country.getId())){
+                Alert alert = ViewUtils.showValidationErrors(Arrays.asList("Deleting address will violate referential integrity."));
+                alert.showAndWait();
+            }
         }
         resetForm();
     }

@@ -19,6 +19,8 @@ public class CustomerRepository extends AbstractRepository<Customer> {
 
         FIND_BY_ID_STATEMENT = "Select * from customer Where customerId = ?";
 
+        DELETE_PRECHECK_STATEMENT = "select count(*) from appointment where customerId = ?";
+
         mapper = new CustomerMapper();
     }
 }

@@ -29,6 +29,8 @@ public class CityRepository extends AbstractRepository<City> {
 
         FIND_BY_NAME_STATEMENT = "Select * from city Where city = ?";
 
+        DELETE_PRECHECK_STATEMENT = "select count(*) from address where cityId = ?";
+
          mapper = new CityMapper();
     }
 }
