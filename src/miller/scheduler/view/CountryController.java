@@ -52,7 +52,7 @@ public class CountryController extends AnchorPane implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colCountryId.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject());
+        colCountryId.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject()); // lambda call back function
         colCountry.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCountry()));
 
         countryTable.setItems(FXCollections.observableArrayList());
