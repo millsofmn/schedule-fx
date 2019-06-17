@@ -8,28 +8,29 @@ import java.util.Optional;
 public class CityRepository extends AbstractRepository<City> {
 
 
+    @Override
     public Optional<City> findOneByName(String city) {
-        return null;
+        return Optional.empty();
     }
 
     public CityRepository(DatabaseConnection databaseConnection) {
         super(databaseConnection);
 
-        DELETE_STATEMENT = "Delete From city Where cityId = ?";
+        deleteStatement = "Delete From city Where cityId = ?";
 
-        NXT_ID_STATEMENT = "Select max(cityId) + 1 From city";
+        nxtIdStatement = "Select max(cityId) + 1 From city";
 
-        INSERT_STATEMENT = "Insert into city (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy, cityId) Values (?, ?, ?, ?, ?, ?, ?)";
+        insertStatement = "Insert into city (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy, cityId) Values (?, ?, ?, ?, ?, ?, ?)";
 
-        UPDATE_STATEMENT = "Update city Set city = ?, countryId = ?, createDate = ?, createdBy = ?, lastUpdate = ?, lastUpdateBy = ? Where cityId = ?";
+        updateStatement = "Update city Set city = ?, countryId = ?, createDate = ?, createdBy = ?, lastUpdate = ?, lastUpdateBy = ? Where cityId = ?";
 
-        SELECT_STATEMENT = "Select * From city";
+        selectStatement = "Select * From city";
 
-        FIND_BY_ID_STATEMENT = "Select * from city Where cityId = ?";
+        findByIdStatement = "Select * from city Where cityId = ?";
 
-        FIND_BY_NAME_STATEMENT = "Select * from city Where city = ?";
+        findByNameStatement = "Select * from city Where city = ?";
 
-        DELETE_PRECHECK_STATEMENT = "select count(*) from address where cityId = ?";
+        deletePrecheckStatement = "select count(*) from address where cityId = ?";
 
          mapper = new CityMapper();
     }

@@ -7,19 +7,19 @@ public class UserRepository extends AbstractRepository<User> {
     public UserRepository(DatabaseConnection databaseConnection) {
         super(databaseConnection);
 
-        DELETE_STATEMENT = "Delete From user Where userId = ?";
+        deleteStatement = "Delete From user Where userId = ?";
 
-        NXT_ID_STATEMENT = "Select max(userId) + 1 From user";
+        nxtIdStatement = "Select max(userId) + 1 From user";
 
-        INSERT_STATEMENT = "Insert into user (username, password, active, createDate, createBy, lastUpdate, lastUpdatedBy, userId) Values (?, ?, ?, ?, ?, ?, ?, ?)";
+        insertStatement = "Insert into user (username, password, active, createDate, createBy, lastUpdate, lastUpdatedBy, userId) Values (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        UPDATE_STATEMENT = "Update user Set username = ?, password = ?, active = ?, createDate = ?, createBy = ?, lastUpdate = ?, lastUpdatedBy = ? Where userId = ?";
+        updateStatement = "Update user Set username = ?, password = ?, active = ?, createDate = ?, createBy = ?, lastUpdate = ?, lastUpdatedBy = ? Where userId = ?";
 
-        SELECT_STATEMENT = "Select * From user";
+        selectStatement = "Select * From user";
 
-        FIND_BY_ID_STATEMENT = "Select * from user Where userId = ?";
+        findByIdStatement = "Select * from user Where userId = ?";
 
-        FIND_BY_NAME_STATEMENT = "Select * from user Where username = ?";
+        findByNameStatement = "Select * from user Where username = ?";
 
         mapper = new UserMapper();
     }

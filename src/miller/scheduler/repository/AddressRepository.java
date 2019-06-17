@@ -8,17 +8,17 @@ public class AddressRepository extends AbstractRepository<Address> {
     public AddressRepository(DatabaseConnection databaseConnection) {
         super(databaseConnection);
 
-        DELETE_STATEMENT = "Delete From address Where addressId = ?";
+        deleteStatement = "Delete From address Where addressId = ?";
 
-        NXT_ID_STATEMENT = "Select max(addressId) + 1 From address";
+        nxtIdStatement = "Select max(addressId) + 1 From address";
 
-        INSERT_STATEMENT = "Insert into address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy, addressId) Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        insertStatement = "Insert into address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy, addressId) Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        UPDATE_STATEMENT = "Update address Set address = ?, address2 = ?, cityId = ?, postalCode = ?, phone = ?, createDate = ?, createdBy = ?, lastUpdate = ?, lastUpdateBy = ? Where addressId = ?";
+        updateStatement = "Update address Set address = ?, address2 = ?, cityId = ?, postalCode = ?, phone = ?, createDate = ?, createdBy = ?, lastUpdate = ?, lastUpdateBy = ? Where addressId = ?";
 
-        SELECT_STATEMENT = "Select * From address";
+        selectStatement = "Select * From address";
 
-        FIND_BY_ID_STATEMENT = "Select * from address Where addressId = ?";
+        findByIdStatement = "Select * from address Where addressId = ?";
 
         mapper = new AddressMapper();
     }

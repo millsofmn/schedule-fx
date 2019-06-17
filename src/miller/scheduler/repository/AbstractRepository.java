@@ -14,14 +14,14 @@ import java.util.logging.Logger;
 public abstract class AbstractRepository<T> {
     private final Logger log = Logger.getLogger(AbstractRepository.class.getName());
 
-    protected String NXT_ID_STATEMENT = "";
-    protected String DELETE_STATEMENT = "";
-    protected String DELETE_PRECHECK_STATEMENT = "";
-    protected String INSERT_STATEMENT = "";
-    protected String SELECT_STATEMENT = "";
-    protected String UPDATE_STATEMENT = "";
-    protected String FIND_BY_ID_STATEMENT = "";
-    protected String FIND_BY_NAME_STATEMENT = "";
+    String nxtIdStatement = "";
+    String deleteStatement = "";
+    String deletePrecheckStatement = "?";
+    String insertStatement = "";
+    String selectStatement = "";
+    String updateStatement = "";
+    String findByIdStatement = "";
+    String findByNameStatement = "";
 
     protected Mapper<T> mapper;
 
@@ -37,8 +37,8 @@ public abstract class AbstractRepository<T> {
         try {
             connection = databaseConnection.getConnection();
 
-            try (PreparedStatement ps = connection.prepareStatement(NXT_ID_STATEMENT);
-                 ResultSet rs = ps.executeQuery(NXT_ID_STATEMENT)) {
+            try (PreparedStatement ps = connection.prepareStatement(nxtIdStatement);
+                 ResultSet rs = ps.executeQuery(nxtIdStatement)) {
 
                 if (rs.next()) {
                     Integer id = rs.getInt(1);
@@ -46,13 +46,12 @@ public abstract class AbstractRepository<T> {
                     return id;
                 }
             } catch (SQLException e) {
-                log.severe("Error : " + e);
+                Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             databaseConnection.releaseConnection(connection);
-
         }
 
         log.info("Nxt id not found.");
@@ -70,7 +69,7 @@ public abstract class AbstractRepository<T> {
             log.info("Setting entity id");
         }
 
-        return executeUpdate(INSERT_STATEMENT, entity);
+        return executeUpdate(insertStatement, entity);
     }
 
     public T update(T entity, String username) {
@@ -84,19 +83,19 @@ public abstract class AbstractRepository<T> {
         }
 
         entity = prepareEntity(entity, username);
-        return executeUpdate(UPDATE_STATEMENT, entity);
+        return executeUpdate(updateStatement, entity);
     }
 
     public Optional<T> findById(int id) {
-        return returnFirst(findBy(FIND_BY_ID_STATEMENT, id));
+        return returnFirst(findBy(findByIdStatement, id));
     }
 
     public T getOne(int id) {
-        return findBy(FIND_BY_ID_STATEMENT, id).get(0);
+        return findBy(findByIdStatement, id).get(0);
     }
 
     public Optional<T> findOneByName(String name) {
-        return returnFirst(findBy(FIND_BY_NAME_STATEMENT, name));
+        return returnFirst(findBy(findByNameStatement, name));
     }
 
     private Optional<T> returnFirst(List<T> entities) {
@@ -112,10 +111,12 @@ public abstract class AbstractRepository<T> {
     public List<T> findBy(String sql, Object... params) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
+
         try {
             connection = databaseConnection.getConnection();
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
 
                 for (int i = 0; i < params.length; i++) {
                     if (params[i] instanceof String) {
@@ -123,7 +124,7 @@ public abstract class AbstractRepository<T> {
                     } else if (params[i] instanceof Integer) {
                         ps.setInt(i + 1, (Integer) params[i]);
                     } else {
-                        throw new RuntimeException("Unable to determine type of parameter.");
+                        ps.setObject(i + 1, params[i]);
                     }
                 }
 
@@ -136,10 +137,11 @@ public abstract class AbstractRepository<T> {
                 Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             databaseConnection.releaseConnection(connection);
         }
+
         return results;
     }
 
@@ -150,7 +152,8 @@ public abstract class AbstractRepository<T> {
         Connection connection = null;
         try {
             connection = databaseConnection.getConnection();
-            try (PreparedStatement ps = connection.prepareStatement(SELECT_STATEMENT);
+
+            try (PreparedStatement ps = connection.prepareStatement(selectStatement);
                  ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
@@ -160,7 +163,7 @@ public abstract class AbstractRepository<T> {
                 Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             databaseConnection.releaseConnection(connection);
         }
@@ -174,16 +177,25 @@ public abstract class AbstractRepository<T> {
             return false;
         }
 
-        try (Connection connection = databaseConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        Connection connection = null;
+
+        try {
+            connection = databaseConnection.getConnection();
+
+            try (Statement statement = connection.createStatement()) {
 
 
-            String stmt = DELETE_STATEMENT.replace("?", String.valueOf(id));
-            int i = statement.executeUpdate(stmt);
+                String stmt = deleteStatement.replace("?", String.valueOf(id));
+                int i = statement.executeUpdate(stmt);
 
-            if (i == 1) return true;
+                if (i == 1) return true;
+            } catch (SQLException e) {
+                log.severe("Error: " + e);
+            }
         } catch (SQLException e) {
-            log.severe("Error: " + e);
+            Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            databaseConnection.releaseConnection(connection);
         }
         return false;
     }
@@ -192,25 +204,34 @@ public abstract class AbstractRepository<T> {
 
         boolean hasForeignKeys = false;
 
-        if (!DELETE_PRECHECK_STATEMENT.isEmpty()) {
+        if (!deletePrecheckStatement.isEmpty()) {
             log.info("Delete precheck for id : " + id);
 
+            Connection connection = null;
 
-            try (Connection connection = databaseConnection.getConnection();
-                 PreparedStatement ps = connection.prepareStatement(DELETE_PRECHECK_STATEMENT)) {
+            try {
+                connection = databaseConnection.getConnection();
 
-                ps.setInt(1, id);
+                try (PreparedStatement ps = connection.prepareStatement(deletePrecheckStatement)) {
 
-                ResultSet resultSet = ps.executeQuery();
+                    ps.setInt(1, id);
 
-                while (resultSet.next()) {
-                    int count = resultSet.getInt(1);
-                    if (count > 0) {
-                        hasForeignKeys = true;
+                    try (ResultSet resultSet = ps.executeQuery()) {
+
+                        while (resultSet.next()) {
+                            int count = resultSet.getInt(1);
+                            if (count > 0) {
+                                hasForeignKeys = true;
+                            }
+                        }
                     }
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException e) {
+                Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
+            } finally {
+                databaseConnection.releaseConnection(connection);
             }
         }
         return hasForeignKeys;
@@ -218,25 +239,34 @@ public abstract class AbstractRepository<T> {
 
     public T executeUpdate(String sql, T entity) {
         log.info("Executing Statement [" + sql + "]");
+
         Connection connection = null;
+
         try {
             connection = databaseConnection.getConnection();
 
-            PreparedStatement ps = connection.prepareStatement(sql);
+            if (runStatement(sql, entity, connection)) return entity;
+        } catch (SQLException e) {
+            Logger.getLogger(AbstractRepository.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            databaseConnection.releaseConnection(connection);
+        }
+        return null;
+    }
+
+    private boolean runStatement(String sql, T entity, Connection connection) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             mapper.mapper(ps, entity);
 
             ps.executeUpdate();
 
-            return entity;
+            return true;
 
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            databaseConnection.releaseConnection(connection);
         }
-
-        return null;
+        return false;
     }
 
     public T saveOrUpdate(T entity, String username) {
